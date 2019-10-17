@@ -1,0 +1,21 @@
+{
+  "name": "bondify",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "gatsby": "^2.16.4",
+    "gatsby-plugin-manifest": "^2.2.23",
+    "gatsby-plugin-offline": "^3.0.16",
+    "pigeon-maps": "^0.14.0",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2"
+  },
+  "scripts": {
+    "start": "gatsby develop",
+    "build": "gatsby build"
+  },
+  "devDependencies": {
+    "fast-csv": "^3.4.0"
+  }
+}
