@@ -5,3 +5,6 @@ public
 gtfs/*.txt
 gtfs/stops/*.json
 !gtfs/stops.txt
+
+# Local Netlify folder
+.netlify

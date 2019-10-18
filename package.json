@@ -13,9 +13,11 @@
   },
   "scripts": {
     "start": "gatsby develop",
-    "build": "gatsby build"
+    "build": "gatsby build",
+    "postinstall": "netlify-lambda install"
   },
   "devDependencies": {
-    "fast-csv": "^3.4.0"
+    "fast-csv": "^3.4.0",
+    "netlify-lambda": "^1.6.3"
   }
 }

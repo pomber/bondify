@@ -25,6 +25,7 @@ export default async function getStops(bounds) {
   const tiles = await Promise.all(promises);
   const allStops = tiles.reduce((a, b) => a.concat(b), []);
 
+  // TODO map stop array to object
   return allStops.filter(
     ([, lat, long]) =>
       sw[0] <= lat && lat <= ne[0] && sw[1] <= long && long <= ne[1]
