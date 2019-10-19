@@ -79,6 +79,6 @@ export default function useLocation() {
     return () => geo.clearWatch(watcher);
   }, []);
 
-  console.log("reducer", state);
+  // console.log("reducer", state);
   return [state, dispatch];
 }

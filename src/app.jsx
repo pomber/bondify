@@ -1,30 +1,10 @@
 import React from "react";
 import Map from "pigeon-maps";
+import { Helmet } from "react-helmet";
 import useLocation from "./use-location";
-
-import "./index.css";
-import getStops from "./get-stops";
-import getArrivals from "./arriving";
 import useTime from "./use-time";
-
-function Marker({ left, top }) {
-  const size = 25;
-  return (
-    <span
-      style={{
-        position: "absolute",
-        height: size,
-        width: size,
-        boxSizing: "border-box",
-        transform: `translate(${left - size / 2}px, ${top - size / 2}px)`,
-        background: "rgba(200,200,200,0.5)",
-        border: "1px solid #222",
-        boxShadow: "0px 0px 5px #222",
-        borderRadius: "50%"
-      }}
-    />
-  );
-}
+import useArrivals from "./use-arrivals";
+import "./index.css";
 
 function timeDifference(a, b) {
   const seconds = Math.round((b - a) / 1000);
@@ -155,33 +135,41 @@ function MyLocation({ left, top }) {
   );
 }
 
+function Marker({ left, top }) {
+  const size = 25;
+  return (
+    <span
+      style={{
+        position: "absolute",
+        height: size,
+        width: size,
+        boxSizing: "border-box",
+        transform: `translate(${left - size / 2}px, ${top - size / 2}px)`,
+        background: "rgba(200,200,200,0.5)",
+        border: "1px solid #222",
+        boxShadow: "0px 0px 5px #222",
+        borderRadius: "50%"
+      }}
+    />
+  );
+}
+
 export default function() {
   const [{ bounds, center, location }, dispatch] = useLocation();
-  console.log("center", center);
-  const [stops, setStops] = React.useState([]);
-  const [arrivals, setArrivals] = React.useState([]);
   const [isMovingMap, setIsMovingMap] = React.useState(false);
 
   const handleBoundsChange = async ({ bounds, center }) => {
     dispatch({ type: "bounds-change", bounds, center });
   };
 
-  React.useEffect(() => {
-    const load = async () => {
-      const stops = await getStops(bounds);
-      console.log({ bounds, stops });
-      setStops(stops);
-      const arrivals = await getArrivals(stops.map(stop => stop[0]));
-      console.log("arrivals", arrivals);
-      setArrivals(arrivals);
-    };
-
-    load();
-    // clean effect
-  }, [bounds.ne[0], bounds.ne[1], bounds.sw[0], bounds.sw[1]]);
+  const { stops, arrivals } = useArrivals(bounds);
 
   return (
     <div style={{ height: "100%", position: "relative" }}>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Bondify</title>
+      </Helmet>
       <Map
         center={center}
         maxZoom={22}
@@ -230,10 +218,17 @@ export default function() {
           height: "100%",
           width: "100%",
           maxHeight: "100%"
-          // background: "rgba(255,255,255,0.4)"
         }}
       >
-        <div style={{ height: `calc(100% - ${rowHeight * 3.8}px` }} />
+        <div
+          style={{
+            height: `calc(100% - ${rowHeight *
+              (Math.min(arrivals.length, 3.5) + 0.4)}px`,
+            transition: "height 0.2s ease-in-out"
+          }}
+        >
+          <h1 className="title">Bondify</h1>
+        </div>
         <div
           style={{
             padding: "0 16px 5px 0",

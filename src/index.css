@@ -62,3 +62,13 @@ body {
   color: #222;
   text-shadow: rgba(200, 200, 200, 0.3) 0px 1px 2px;
 }
+
+.title {
+  margin: 0px;
+  padding: 15px;
+  mix-blend-mode: difference;
+  font-weight: bolder;
+  text-align: center;
+  color: #fafafa;
+  background: rgba(0, 0, 0, 0.3);
+}
