@@ -63,12 +63,23 @@ body {
   text-shadow: rgba(200, 200, 200, 0.3) 0px 1px 2px;
 }
 
+@font-face {
+  font-family: "Pacifico";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: local("Pacifico Regular"), local("Pacifico-Regular"),
+    url(https://fonts.gstatic.com/l/font?kit=FwZY7-Qmy14u9lezJ96F-svpwSXXmsC6&skey=a336e4011ec32111&v=v16)
+      format("woff2");
+}
+
 .title {
   margin: 0px;
   padding: 15px;
-  mix-blend-mode: difference;
-  font-weight: bolder;
+  font-family: "Pacifico";
+  font-size: 60px;
   text-align: center;
-  color: #fafafa;
-  background: rgba(0, 0, 0, 0.3);
+  color: #111;
+  opacity: 0.8;
+  text-shadow: rgba(200, 200, 200, 0.3) 0px 1px 2px;
 }
