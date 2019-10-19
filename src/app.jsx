@@ -17,9 +17,11 @@ function Marker({ left, top }) {
         position: "absolute",
         height: size,
         width: size,
+        boxSizing: "border-box",
         transform: `translate(${left - size / 2}px, ${top - size / 2}px)`,
-        background: "rgba(100,200,220,0.75)",
-        border: "1px solid pink",
+        background: "rgba(200,200,200,0.5)",
+        border: "1px solid #222",
+        boxShadow: "0px 0px 5px #222",
         borderRadius: "50%"
       }}
     />
@@ -136,6 +138,25 @@ function Arrivals({ arrivals }) {
   );
 }
 
+function MyLocation({ left, top }) {
+  const size = 16;
+  return (
+    <span
+      style={{
+        boxSizing: "border-box",
+        position: "absolute",
+        height: size,
+        width: size,
+        transform: `translate(${left - size / 2}px, ${top - size / 2}px)`,
+        background: "#4183f3",
+        border: "2px solid rgba(250,250,250,0.9)",
+        borderRadius: "50%",
+        boxShadow: "0px 0px 5px #4183f3"
+      }}
+    />
+  );
+}
+
 export default function() {
   const location = useLocation() || defaultLocation;
   console.log(location);
@@ -162,6 +183,7 @@ export default function() {
         {stops.map(([stopId, lat, long]) => (
           <Marker key={stopId} anchor={[lat, long]} />
         ))}
+        <MyLocation anchor={location} />
       </Map>
       <div
         className="hide-scrollbar"
