@@ -36,3 +36,29 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.button {
+  width: 100%;
+  font-size: 20px;
+  padding: 10px;
+  opacity: 0.9;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px 0 rgba(14, 30, 37, 0.12);
+}
+
+.button.green {
+  background-color: rgb(151, 204, 118);
+  background-image: linear-gradient(rgb(151, 204, 118), rgb(139, 204, 98));
+  color: white;
+  text-shadow: rgba(0, 0, 0, 0.3) 0px 1px 2px;
+  font-size: 26px;
+}
+
+.button.white {
+  background-color: white;
+  color: #222;
+  text-shadow: rgba(200, 200, 200, 0.3) 0px 1px 2px;
+}

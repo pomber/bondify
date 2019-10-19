@@ -7,8 +7,6 @@ import getStops from "./get-stops";
 import getArrivals from "./arriving";
 import useTime from "./use-time";
 
-const defaultLocation = [-34.797232, -58.232208];
-
 function Marker({ left, top }) {
   const size = 25;
   return (
@@ -158,25 +156,34 @@ function MyLocation({ left, top }) {
 }
 
 export default function() {
-  const location = useLocation() || defaultLocation;
-  console.log(location);
+  const [{ bounds, center, location }, dispatch] = useLocation();
+  console.log("center", center);
   const [stops, setStops] = React.useState([]);
   const [arrivals, setArrivals] = React.useState([]);
   const [isMovingMap, setIsMovingMap] = React.useState(false);
 
-  const handleBoundsChange = async ({ bounds }) => {
-    const stops = await getStops(bounds);
-    console.log({ bounds, stops });
-    setStops(stops);
-    const arrivals = await getArrivals(stops.map(stop => stop[0]));
-    console.log("arrivals", arrivals);
-    setArrivals(arrivals);
+  const handleBoundsChange = async ({ bounds, center }) => {
+    dispatch({ type: "bounds-change", bounds, center });
   };
+
+  React.useEffect(() => {
+    const load = async () => {
+      const stops = await getStops(bounds);
+      console.log({ bounds, stops });
+      setStops(stops);
+      const arrivals = await getArrivals(stops.map(stop => stop[0]));
+      console.log("arrivals", arrivals);
+      setArrivals(arrivals);
+    };
+
+    load();
+    // clean effect
+  }, [bounds.ne[0], bounds.ne[1], bounds.sw[0], bounds.sw[1]]);
 
   return (
     <div style={{ height: "100%", position: "relative" }}>
       <Map
-        center={location}
+        center={center}
         maxZoom={22}
         zoom={19}
         minZoom={17}
@@ -186,15 +193,6 @@ export default function() {
           <Marker key={stopId} anchor={[lat, long]} />
         ))}
         <MyLocation anchor={location} />
-        {/* <div
-          style={{
-            width: "80vw",
-            border: "1px solid black",
-            height: "80vw",
-            margin: "10vw",
-            borderRadius: "50%"
-          }}
-        ></div> */}
       </Map>
       <div
         style={{
@@ -204,29 +202,21 @@ export default function() {
           bottom: 0,
           width: "100%",
           padding: "10px",
-          background: "rgba(255,255,255,0.8)"
+          background: "rgba(255,255,255,0.5)"
         }}
       >
-        <p style={{ color: "#333" }}>
-          Move el mapa y hace zoom para que solo queden las paradas que te
+        <p style={{ color: "#444" }}>
+          Mové el mapa y hacé zoom para que solo queden las paradas que te
           interesan.
         </p>
         <button
-          style={{
-            width: "100%",
-            fontSize: "30px",
-            padding: "10px",
-            opacity: "0.9",
-            backgroundColor: "#97cc76",
-            backgroundImage: "linear-gradient(to bottom, #97cc76, #8bcc62)",
-            textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)",
-            borderRadius: "3px",
-            color: "white",
-            border: "none",
-            cursor: "pointer"
-          }}
-          onClick={() => setIsMovingMap(false)}
+          className="button white"
+          style={{ marginBottom: "6px" }}
+          onClick={() => dispatch({ type: "center" })}
         >
+          Centrar
+        </button>
+        <button className="button green" onClick={() => setIsMovingMap(false)}>
           Listo
         </button>
       </div>
