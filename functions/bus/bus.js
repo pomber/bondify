@@ -23,7 +23,7 @@ exports.handler = async function(event, context) {
       bus: x.routeShortName,
       description: descriptions[x.routeShortName],
       arrival: x.scheduledArrivalTime,
-      trip: x.tripId + "__" + stopId
+      trip: x.tripId + "__" + stopId + "__" + x.vehicleId
     }));
     return {
       statusCode: 200,

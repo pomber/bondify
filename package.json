@@ -12,12 +12,14 @@
     "react-dom": "^16.10.2"
   },
   "scripts": {
-    "start": "gatsby develop",
+    "develop": "gatsby develop",
+    "start": "netlify dev",
     "build": "gatsby build",
     "postinstall": "netlify-lambda install"
   },
   "devDependencies": {
     "fast-csv": "^3.4.0",
+    "netlify-cli": "^2.19.0",
     "netlify-lambda": "^1.6.3"
   }
 }
