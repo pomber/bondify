@@ -173,7 +173,7 @@ export default function() {
       <Map
         center={center}
         maxZoom={22}
-        zoom={19}
+        defaultZoom={19}
         minZoom={17}
         onBoundsChanged={handleBoundsChange}
       >
@@ -223,7 +223,7 @@ export default function() {
         <div
           style={{
             height: `calc(100% - ${rowHeight *
-              (Math.min(arrivals.length, 3.5) + 0.4)}px`,
+              (Math.min(arrivals.length, 3.5) + 0.4)}px)`,
             transition: "height 0.2s ease-in-out"
           }}
         >
