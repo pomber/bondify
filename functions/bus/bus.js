@@ -12,10 +12,18 @@ exports.handler = async function(event, context) {
 
   try {
     const { data } = await axios.get(url);
-    const result = data.data.entry.arrivalsAndDepartures.map(x => ({
+    const { entry, references } = data.data;
+
+    const descriptions = {};
+    references.routes.forEach(({ shortName, description }) => {
+      descriptions[shortName] = description;
+    });
+
+    const result = entry.arrivalsAndDepartures.map(x => ({
       bus: x.routeShortName,
+      description: descriptions[x.routeShortName],
       arrival: x.scheduledArrivalTime,
-      trip: x.tripId
+      trip: x.tripId + "__" + stopId
     }));
     return {
       statusCode: 200,

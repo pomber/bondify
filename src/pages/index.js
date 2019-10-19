@@ -27,22 +27,85 @@ function Marker({ left, top }) {
 }
 
 function timeDifference(a, b) {
-  const seconds = (b - a) / 1000;
-  if (seconds < 60) {
-    return `viene en ${Math.round(seconds)} segundos`;
+  const seconds = Math.round((b - a) / 1000);
+  if (Math.abs(seconds) <= 60) {
+    if (seconds < -1) {
+      return ["se fue hace", -seconds, "segundos"];
+    } else if (seconds === -1) {
+      return ["se fue hace", -seconds, "segundo"];
+    } else if (seconds === 1) {
+      return ["llega en", seconds, "segundo"];
+    } else {
+      return ["llega en", seconds, "segundos"];
+    }
   }
-  const minutes = seconds / 60;
-  return `viene en ${Math.round(minutes)} minutos`;
+
+  const minutes = Math.round(seconds / 60);
+
+  if (minutes < -1) {
+    return ["se fue hace", -minutes, "minutos"];
+  } else if (minutes === -1) {
+    return ["se fue hace", -minutes, "minuto"];
+  } else if (minutes === 1) {
+    return ["llega en", minutes, "minuto"];
+  } else {
+    return ["llega en", minutes, "minutos"];
+  }
+}
+
+function getBusNumberAndCode(bus) {
+  const number = bus.match(/^\d+/)[0];
+  const code = bus.slice(number.length);
+  return { number, code };
+}
+
+function Arrival({ arrival, now }) {
+  const { bus, description, arrival: time } = arrival;
+  const { number, code } = getBusNumberAndCode(bus);
+  const [time1, time2, time3] = timeDifference(now, new Date(time));
+  return (
+    <div
+      style={{
+        width: "100%",
+        boxSizing: "border-box",
+        padding: "10px",
+        background: "rgba(20,20,20,0.75)",
+        color: "#fafafa",
+        display: "flex",
+        justifyContent: "space-between"
+      }}
+    >
+      <div style={{ width: "80%" }}>
+        <div style={{ fontSize: "32px" }}>
+          <strong>{number}</strong>
+          <span style={{ color: "#ccc" }}>{code}</span>
+        </div>
+        <div className="ellipsis" style={{ fontSize: "0.8em" }}>
+          {description}
+        </div>
+      </div>
+      <div
+        style={{
+          width: "64px",
+          display: "flex",
+          flexDirection: "column",
+          textAlign: "center"
+        }}
+      >
+        <div style={{ fontSize: "0.5em", color: "#ccc" }}>{time1}</div>
+        <div style={{ fontSize: "28px" }}>{time2}</div>
+        <div style={{ fontSize: "0.5em", color: "#ccc" }}> {time3}</div>
+      </div>
+    </div>
+  );
 }
 
 function Arrivals({ arrivals }) {
   const now = useTime();
   return (
     <React.Fragment>
-      {arrivals.map(({ trip, arrival, bus }) => (
-        <div key={trip}>
-          <strong>{bus}</strong> {timeDifference(now, new Date(arrival))}
-        </div>
+      {arrivals.map(arrival => (
+        <Arrival key={arrival.trip} arrival={arrival} now={now} />
       ))}
     </React.Fragment>
   );
@@ -75,7 +138,18 @@ export default function() {
           <Marker key={stopId} anchor={[lat, long]} />
         ))}
       </Map>
-      <div style={{ position: "absolute", top: 0, fontSize: "1.3em" }}>
+      <div
+        className="hide-scrollbar"
+        style={{
+          position: "absolute",
+          top: 0,
+          fontSize: "1.3em",
+          height: "100%",
+          width: "100%",
+          maxHeight: "100%"
+        }}
+      >
+        <div style={{ height: "80%" }} />
         <Arrivals arrivals={arrivals} />
       </div>
     </div>
