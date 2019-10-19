@@ -17,7 +17,8 @@
     "develop": "gatsby develop",
     "start": "netlify dev",
     "build": "gatsby build",
-    "postinstall": "netlify-lambda install"
+    "postinstall": "netlify-lambda install",
+    "deploy": "netlify deploy"
   },
   "devDependencies": {
     "fast-csv": "^3.4.0",
