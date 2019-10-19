@@ -162,6 +162,7 @@ export default function() {
   console.log(location);
   const [stops, setStops] = React.useState([]);
   const [arrivals, setArrivals] = React.useState([]);
+  const [isMovingMap, setIsMovingMap] = React.useState(false);
 
   const handleBoundsChange = async ({ bounds }) => {
     const stops = await getStops(bounds);
@@ -176,7 +177,8 @@ export default function() {
     <div style={{ height: "100%", position: "relative" }}>
       <Map
         center={location}
-        zoom={18}
+        maxZoom={22}
+        zoom={19}
         minZoom={17}
         onBoundsChanged={handleBoundsChange}
       >
@@ -184,19 +186,79 @@ export default function() {
           <Marker key={stopId} anchor={[lat, long]} />
         ))}
         <MyLocation anchor={location} />
+        {/* <div
+          style={{
+            width: "80vw",
+            border: "1px solid black",
+            height: "80vw",
+            margin: "10vw",
+            borderRadius: "50%"
+          }}
+        ></div> */}
       </Map>
+      <div
+        style={{
+          display: !isMovingMap && "none",
+          boxSizing: "border-box",
+          position: "absolute",
+          bottom: 0,
+          width: "100%",
+          padding: "10px",
+          background: "rgba(255,255,255,0.8)"
+        }}
+      >
+        <p style={{ color: "#333" }}>
+          Move el mapa y hace zoom para que solo queden las paradas que te
+          interesan.
+        </p>
+        <button
+          style={{
+            width: "100%",
+            fontSize: "30px",
+            padding: "10px",
+            opacity: "0.9",
+            backgroundColor: "#97cc76",
+            backgroundImage: "linear-gradient(to bottom, #97cc76, #8bcc62)",
+            textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)",
+            borderRadius: "3px",
+            color: "white",
+            border: "none",
+            cursor: "pointer"
+          }}
+          onClick={() => setIsMovingMap(false)}
+        >
+          Listo
+        </button>
+      </div>
       <div
         className="hide-scrollbar"
         style={{
+          display: isMovingMap && "none",
           position: "absolute",
           top: 0,
           fontSize: "1.3em",
           height: "100%",
           width: "100%",
           maxHeight: "100%"
+          // background: "rgba(255,255,255,0.4)"
         }}
       >
-        <div style={{ height: `calc(100% - ${rowHeight * 3.5}px` }} />
+        <div style={{ height: `calc(100% - ${rowHeight * 3.8}px` }} />
+        <div
+          style={{
+            padding: "0 16px 5px 0",
+            textAlign: "right",
+            fontSize: "16px",
+            textTransform: "uppercase",
+            color: "#333",
+            fontWeight: "bolder",
+            textShadow: "0 1px 2px rgba(255, 255, 255, 0.3)",
+            cursor: "pointer"
+          }}
+          onClick={() => setIsMovingMap(true)}
+        >
+          Mover Mapa
+        </div>
         <Arrivals arrivals={arrivals} />
       </div>
     </div>
